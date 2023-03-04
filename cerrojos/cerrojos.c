@@ -28,6 +28,12 @@ int main(int argc, char *argv[]){
             exit(1);
         }
 
+        //Apartado B
+        if (cerrojo.l_type != F_WRLCK){
+            perror("Error al bloquear el cerrojo.");
+            exit(1);
+        }
+
         time_t tiempo = time(NULL);
         char *horaLegible = ctime(&tiempo);
         if (write(fd, horaLegible, sizeof(horaLegible)) == -1){
