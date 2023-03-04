@@ -16,21 +16,42 @@ int main(int argc, char *argv[]){
     cerrojo.l_start = 0;
     cerrojo.l_len = 0;
 
-    char *buffer = malloc(500);
-    time_t tiempo = time(NULL);
-    char *horaLegible = ctime(&tiempo);
-    buffer = horaLegible;
+    
 
-    if (fcntl(fd, F_SETLK, &cerrojo) != -1){
-        if (write(fd, &buffer, sizeof(buffer)) == -1){
-            close(fd);
-            exit(0);
+    if (fcntl(fd, F_GETLK, &cerrojo) == -1){
+        perror("Error al consultar el estado del cerrojo.");
+        exit(1);
+    }
+    else if(cerrojo.l_type == F_UNLCK){
+        if (fcntl(fd, F_SETLK, &cerrojo) == -1){
+            perror("Error cerrojo no establecido.");
+            exit(1);
+        }
+
+        time_t tiempo = time(NULL);
+        char *horaLegible = ctime(&tiempo);
+        if (write(fd, horaLegible, sizeof(horaLegible)) == -1){
+            perror("Error al intentar escribir en el archivo.");
+            exit(1);
         }
         else{
-            cerrojo.l_type = F_WRLCK;
             sleep(40);
             cerrojo.l_type = F_UNLCK;
+
+            if (fcntl(fd, F_SETLK, &cerrojo) == -1){
+                perror("Error cerrojo no liberado.");
+                exit(1);
+            }
         }
+    }
+    else {
+        printf("El cerrojo está bloqueado\n");
+        exit(1);
+    }
+
+    if (close(fd) == -1){
+        perror("Error al intentar cerrar el archivo.");
+        exit(1);
     }
 
     return 0;
