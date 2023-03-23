@@ -14,11 +14,11 @@ int main() {
     
     if ((fd1 = open("~/tuberia1", O_RDONLY | O_NONBLOCK)) == -1) {
         perror("Error al abrir la tubería 1");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
     if ((fd2 = open("~/tuberia2", O_RDONLY | O_NONBLOCK)) == -1) {
         perror("Error al abrir la tubería 2");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
     
     // Calcular el descriptor máximo para la función select()
@@ -32,7 +32,7 @@ int main() {
         // Espera a que haya datos listos para leer
         if (select(maxfd + 1, &readfds, NULL, NULL, NULL) == -1) {
             perror("Error en select()");
-            exit(1);
+            exit(EXIT_FAILURE);
         }
         
         if (FD_ISSET(fd1, &readfds)) {
