@@ -1,3 +1,4 @@
+// David Ferreras Díaz y Alejandro Zamorano Méndez
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
