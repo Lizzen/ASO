@@ -1,3 +1,4 @@
+// David Ferreras Díaz y Alejandro Zamorano Méndez
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -10,7 +11,7 @@
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
-        printf("Usage: %s message\n", argv[0]);
+        printf("Faltan argumentos: message\n");
         exit(1);
     }
 
