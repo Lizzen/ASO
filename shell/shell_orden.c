@@ -185,7 +185,7 @@ void ord_exit(struct job *job,struct listaJobs *listaJobs, int esBg) {
 
   // Finalizar todos los jobs
     while (listaJobs->primero != NULL) {
-        eliminaJob(listaJobs, listaJobs->primero->progs->pid, 0);
+        eliminaJob(listaJobs, listaJobs->primero->progs[0].pid, 0);
     }
   // Salir del programa
     exit(EXIT_SUCCESS);
@@ -199,7 +199,6 @@ void ord_pwd(struct job *job,struct listaJobs *listaJobs, int esBg) {
         printf("%s\n", cwd);
     } else {
         perror("getcwd() error");
-        exit(EXIT_FAILURE);
     }
 }
 
@@ -257,6 +256,7 @@ void ord_wait(struct job *job,struct listaJobs *listaJobs, int esBg) {
         else {
             eliminaJob(listaJobs, job->progs[0].pid, esBg);
         }
+    }
 }
 
 void ord_kill(struct job *job,struct listaJobs *listaJobs, int esBg) {
@@ -292,6 +292,7 @@ void ord_stop(struct job *job,struct listaJobs *listaJobs, int esBg) {
                 tcsetpgrp(STDIN_FILENO, job->pgrp);
             }
         }
+    }
 }
 
 void ord_fg(struct job *job,struct listaJobs *listaJobs, int esBg) {
@@ -408,7 +409,7 @@ void ord_externa(struct job *job,struct listaJobs *listaJobs, int esBg) {
             setpgid(0, 0);
 
 	  // Ejecutar programa con los argumentos adecuados
-            if (execvp(job->progs[0].nombre, job->progs[0].argumentos) < 0) {
+            if (execvp(job->progs[0].pid, job->progs[0].argv[1]) < 0) {
 	  // Si la llamada a execvp retorna es que ha habido un error
                 perror("execvp");
                 exit(EXIT_FAILURE);
@@ -420,30 +421,29 @@ void ord_externa(struct job *job,struct listaJobs *listaJobs, int esBg) {
             struct job *jobNuevo = malloc(sizeof(struct job));
             jobNuevo->numProgs = job->numProgs;
             for (int i = 0; i < job->numProgs; i++) {
-                strcpy(jobNuevo->progs[i].nombre, job->progs[i].nombre);
+                strcpy(jobNuevo->progs[i].pid, job->progs[i].argv[0]);
                 for (int j = 0; j < MAX_ARGS; j++) {
-                    if (job->progs[i].argumentos[j] != NULL) {
-                        jobNuevo->progs[i].argumentos[j] = strdup(job->progs[i].argumentos[j]);
+                    if (job->progs[i].argv[j] != NULL) {
+                        jobNuevo->progs[i].argv[j] = strdup(job->progs[i].argv[j]);
                     } else {
-                        jobNuevo->progs[i].argumentos[j] = NULL;
+                        jobNuevo->progs[i].argv[j] = NULL;
                 }
                 }
             }
-            jobNuevo->pgid = pid;
-            jobNuevo->jobID = listaJobs->numJobs++;
-            jobNuevo->estado = EN_EJECUCION;
+            jobNuevo->pgrp = pid;
      	  // Insertar Job en la lista (el jobID se asigna de manera automatica)
-            insertaJob(listaJobs, jobNuevo, jobNuevo->esBg);
+            insertaJob(listaJobs, jobNuevo, esBg);
      	  // Si no se ejecuta en background
             if (!esBg) {
 	     // Cederle el terminal de control y actualizar listaJobs->fg
-                listaJobs->job_en_foreground = jobNuevo;
-                tcsetpgrp(STDIN_FILENO, jobNuevo->pgid);
+                listaJobs->fg = jobNuevo;
+                tcsetpgrp(STDIN_FILENO, jobNuevo->pgrp);
             }
 	  // De lo contrario, informar por pantalla de su ejecucion
             else {
-                printf("[%d] %d\n", jobNuevo->jobID, jobNuevo->pgid);
+                printf("[%d] %d\n", jobNuevo->jobId, jobNuevo->pgrp);
             }
+        }
 }
 
 // Realiza la ejecución de la orden

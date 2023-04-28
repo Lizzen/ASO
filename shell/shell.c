@@ -11,15 +11,15 @@ struct listaJobs listaJobs = {NULL, NULL};
 // Funciones auxiliares
 void manejadorSIGINT(int sig) {
     // Enviar señal SIGINT al proceso en foreground
-    if (listaJobs.job_en_foreground != NULL) {
-        kill(listaJobs.job_en_foreground->pgid, SIGINT);
+    if (listaJobs.fg != NULL) {
+        kill(-listaJobs.fg->pgrp, SIGINT);
     }
 }
 
 void manejadorSIGQUIT(int sig) {
     // Enviar señal SIGQUIT al proceso en foreground
-    if (listaJobs.job_en_foreground != NULL) {
-        kill(listaJobs.job_en_foreground->pgid, SIGQUIT);
+    if (listaJobs.fg!= NULL) {
+        kill(-listaJobs.fg->pgrp, SIGQUIT);
     }
 }
 
@@ -67,7 +67,7 @@ int main(int argc, char **argv) {
     while (1) {
     
     // Si no hay job_en_foreground
-    if (listaJobs.job_en_foreground != NULL){
+    if (listaJobs.fg != NULL){
 	    // Comprobar finalización de jobs
         compruebaJobs(&listaJobs);
         
@@ -85,7 +85,7 @@ int main(int argc, char **argv) {
     // (Else) Si existe job en foreground
     else{
 	    // Esperar a que acabe el proceso que se encuentra en foreground
-        pid_t pid = listaJobs.job_en_foreground->progs[0].pid;
+        pid_t pid = listaJobs.fg->progs[0].pid;
         int status;
         if (waitpid(pid, &status, WUNTRACED) < 0) {
                 perror("waitpid");
@@ -96,18 +96,18 @@ int main(int argc, char **argv) {
 	    // Si parada_desde_terminal
         if (WIFSTOPPED(status)) {
 	        // Informar de la parada
-            printf("Job %d parado\n", listaJobs.job_en_foreground->jobId);
+            printf("Job %d parado\n", listaJobs.fg->jobId);
 	        // Actualizar el estado del job y la lista
-            listaJobs.job_en_foreground->runningProgs = 1;
-            listaJobs.job_en_foreground->progs[0].pid = estado;
-            listaJobs.job_en_foreground->pgrp = listaJobs.job_en_foreground->progs[0].pid;
-            tcsetattr(STDIN_FILENO, TCSADRAIN, &listaJobs.job_en_foreground->tcattr);
+            listaJobs.fg->runningProgs = 1;
+            listaJobs.fg->progs[0].pid = status;
+            listaJobs.fg->pgrp = listaJobs.fg->progs[0].pid;
         }
 	    // (Else) si no
         else{
 	        // Eliminar el job de la lista
-            eliminaJob(&listaJobs, listaJobs.job_en_foreground->progs[0].pid, 0);
+            eliminaJob(&listaJobs, listaJobs.fg->progs[0].pid, 0);
         }
+    }
     }
 
    // Salir del programa (codigo error)
