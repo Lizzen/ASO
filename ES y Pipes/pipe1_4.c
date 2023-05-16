@@ -7,10 +7,11 @@
 #include <sys/select.h>
 
 int main() {
-    int fd1, fd2, maxfd;
-    fd_set readfds;
-    char buf[256];
+    int fd1, fd2, maxfd;    // Descriptores de archivo para las tuberías
+    fd_set readfds; // Conjunto de descriptores de archivo para select()
+    char buf[256];  // Buffer para leer datos de las tuberías
     
+    // Abrir las tuberías en modo no bloqueante
     if ((fd1 = open("~/tuberia1", O_RDONLY | O_NONBLOCK)) == -1) {
         perror("Error al abrir la tubería 1");
         exit(EXIT_FAILURE);
@@ -23,6 +24,7 @@ int main() {
     // Calcular el descriptor máximo para la función select()
     maxfd = (fd1 > fd2) ? fd1 : fd2;
     
+     // Bucle principal: espera a que haya datos disponibles en las tuberías
     while (!feof(stdin)) {
         FD_ZERO(&readfds);
         FD_SET(fd1, &readfds);
@@ -35,6 +37,7 @@ int main() {
             exit(EXIT_FAILURE);
         }
         
+         // Leer datos de la tuberías
         if (FD_ISSET(fd1, &readfds)) {
             printf("Datos leídos de la tubería 1: ");
             ssize_t n = read(fd1, buf, sizeof(buf));

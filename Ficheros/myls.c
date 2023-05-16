@@ -14,6 +14,7 @@ int main(int argc, char *argv[]) {
     while ((opt = getopt(argc, argv, "d:f:")) != -1) {
         switch (opt) {
             case 'd':
+                // Obtiene el camino del directorio
                 path = optarg;
 
                 // Abre el fichero si cumle las condiciones
@@ -59,6 +60,7 @@ int main(int argc, char *argv[]) {
                 }
                 break;
             case 'f':
+                // Obtiene el camino del directorio
                 path = optarg;
                 char *filename = basename(path);
                 // Abre el fichero regular

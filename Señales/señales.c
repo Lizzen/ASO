@@ -3,16 +3,17 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <unistd.h>
-#
 
 int periodo = 0;
 int tiempo = 0;
 
+// Manejador de señal SIGTERM
 void sigterm() {
     printf("\nSegundos transcurridos: %d\n", tiempo);
     exit(0);
 }
 
+// Manejador de señal SIGALRM
 void sigalrm() {
     tiempo += periodo;
     alarm(periodo);
@@ -24,22 +25,26 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
+    // Obtener el periodo de actualización
     periodo = atoi(argv[1]);
     if (periodo <= 0) {
         printf("El argumento segundos debe ser un número entero positivo\n");
         exit(1);
     }
 
+    // Ignorar la señal SIGINT
     if (signal(SIGINT, SIG_IGN) == SIG_ERR){
         printf("Error al capturar la señal SIGINT\n");
         exit(EXIT_FAILURE);
     }
 
+    // Asignar el manejador de señal SIGTERM
     if (signal(SIGTERM, sigterm) == SIG_ERR) {
         printf("Error al capturar la señal SIGTERM\n");
         exit(EXIT_FAILURE);
     }
 
+    // Asignar el manejador de señal SIGALRM
     if (signal(SIGALRM, sigalrm) == SIG_ERR) {
         printf("Error al capturar la señal SIGALRM\n");
         exit(EXIT_FAILURE);
@@ -54,7 +59,7 @@ int main(int argc, char *argv[]) {
             printf(" [%s]\n", argv[2]);
         }
         else {printf("\n");}
-        pause();
+        pause();    // Esperar por una señal
     }
 
     return 0;
