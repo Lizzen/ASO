@@ -1,3 +1,13 @@
+// David Ferreras Díaz
+/*Completar el program del apartado 1.3 añadiendo la posibilidad de que el programa termine
+cuando el usuario presione en el terminal CTR+D
+Nota: El primer conjunto de descriptores de fichero que se le pasa a select es aquel sobre el que
+queremos esperar hasta que haya algún dato que leer. Hay una pequeña excepción. Cuando se
+alcanza el final de un fichero (o se corta la comunicación en una tubería o un socket), select se
+desbloquea si el objeto está entre los especificados en su primer conjunto de descriptores de fichero.
+En estos casos al hacer un read sobre uno de ellos, la llamada al sistema devolverá cero
+inmediatamente, señal que nos sirve para detectar el fin del fichero o el corte de la comunicación.*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>

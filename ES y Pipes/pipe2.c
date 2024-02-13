@@ -1,4 +1,16 @@
 // David Ferreras Díaz y Alejandro Zamorano Méndez
+/*Tuberías sin nombre
+Escribir un programa que emule el comportamiento de la shell en la ejecución de una sentencia en
+la forma: comando1 argumento 1 | comando2 argumento2 . El programa abrirá una tubería sin
+nombre (int pipe(int pipefd[2])) y creará un hijo:
+•
+•
+El programa padre ejecutará “comando1 argumento1” y redireccionará la salida estándar al
+extremo de escritura.
+El hijo, ejecutará “comando2 argumento2”, en este caso la entrada estándar deberá
+duplicarse con el extremo de lectura de la tubería.
+Antes de ejecutar el comando correspondiente deben cerrarse todos los descriptores no necesarios.*/
+
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>

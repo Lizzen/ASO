@@ -1,4 +1,8 @@
 // David Ferreras Díaz y Alejandro Zamorano Méndez
+/*Escribir un programa que abra la tubería con nombre anterior (~/tuberia) en modo solo
+escritura, y escriba en ella el primer argumento del programa. En otro terminal, leer de la tubería
+usando un comando adecuado.*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>

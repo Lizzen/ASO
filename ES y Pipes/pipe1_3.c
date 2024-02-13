@@ -1,4 +1,11 @@
 // David Ferreras Díaz y Alejandro Zamorano Méndez
+/*Es habitual que un proceso lea o escriba de diferentes flujos. Las llamadas select(), poll() y
+epoll() permiten multiplexar diferentes las operaciones de E/S sobre múltiples flujos. Crear otra
+tubería con nombre (ej. ~/tuberia2). Escribir un programa que espere con select() hasta que haya
+datos listos para leer en alguna de las tuberías. El programa debe leer entonces de la tubería
+correspondiente y mostrar los datos leidos en la salida estándar, indicando la tubería desde la que se
+leyó. Usar lecturas no bloqueantes usando el flag O_NONBLOCK.*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
