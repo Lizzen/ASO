@@ -31,7 +31,7 @@ int main() {
 		exit(EXIT_FAILURE);
 	}
 
-	printf("UID efectivo: %d", geteuid());
+	printf("UID efectivo: %d\n", geteuid());
 
 	return 0;
 } 
