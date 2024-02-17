@@ -1,3 +1,9 @@
+/*El comando del sistema uname muestra información sobre diversos aspectos del sistema. Escribir un programa que
+muestre por la salida estándar los detalles del sistema que reporta uname y que sea equivalente a ejecutar el comando:
+uname -s -n -r -v -m
+Consultar la pagina de manual de la llamada al sistema uname().
+• Reportar los valores obtenidos en los puestos del laboratorio.*/
+
 #include <sys/utsname.h>
 #include <stdlib.h>
 #include <stdio.h>

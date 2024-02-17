@@ -1,3 +1,9 @@
+/*Escribir un programa uids.c que muestre:
+• El uid efectivo y el uid real del usuario que ejecutó el programa, e indique si el correspondiente ejecutable tiene
+activado el bit setuid.
+• Adicionalmente, utilizando la llamada getpwuid() mostrar el nombre de usuario del usuario real, su directorio
+home y el shell que utiliza.*/
+
 #include <sys/types.h>
 #include <pwd.h>
 #include <unistd.h>

@@ -1,3 +1,7 @@
+/*Las funciones sysconf() y pathconf() permiten consultar información sobre la configuración del sistema y el
+sistema de ficheros respectivamente. Escribir un programa que muestre los siguientes parámetros y reportar los valores
+obtenidos en los puestos del laboratorio.*/
+
 #include <stdio.h>
 #include <unistd.h>
 
