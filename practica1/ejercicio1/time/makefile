@@ -4,7 +4,7 @@ OBJS   = time.o
 all: time
 
 
-setuid : $(OBJS)
+time : $(OBJS)
 	gcc $(CFLAGS) -o time $(OBJS)
 
 clean:

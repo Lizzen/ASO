@@ -4,7 +4,7 @@ OBJS   = localtime.o
 all: localtime
 
 
-setuid : $(OBJS)
+localtime : $(OBJS)
 	gcc $(CFLAGS) -o localtime $(OBJS)
 
 clean:

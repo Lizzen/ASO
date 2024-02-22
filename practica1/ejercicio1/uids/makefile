@@ -4,7 +4,7 @@ OBJS   = uids.o
 all: uids
 
 
-setuid : $(OBJS)
+uids : $(OBJS)
 	gcc $(CFLAGS) -o uids $(OBJS)
 
 clean:

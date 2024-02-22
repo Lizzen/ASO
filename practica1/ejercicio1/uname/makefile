@@ -4,7 +4,7 @@ OBJS   = uname.o
 all: uname
 
 
-setuid : $(OBJS)
+uname : $(OBJS)
 	gcc $(CFLAGS) -o uname $(OBJS)
 
 clean:

@@ -4,7 +4,7 @@ OBJS   = gettime.o
 all: gettime
 
 
-setuid : $(OBJS)
+gettime : $(OBJS)
 	gcc $(CFLAGS) -o gettime $(OBJS)
 
 clean:

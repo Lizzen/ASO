@@ -4,7 +4,7 @@ OBJS   = sysconf.o
 all: sysconf
 
 
-setuid : $(OBJS)
+sysconf : $(OBJS)
 	gcc $(CFLAGS) -o sysconf $(OBJS)
 
 clean:
