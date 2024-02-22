@@ -9,7 +9,7 @@ int main(int argc, char** argv){
     // Limpia errores previos
     dlerror();
 
-    void *carga = dlopen("./libmilibreria.so", RTLD_LAZY);
+    void *carga = dlopen("./libmilibreria_dynamic.so", RTLD_LAZY);
     if (!carga){
         fprintf(stderr, "Error al cargar las librerías dinámicas.");
         exit(EXIT_FAILURE);
@@ -19,7 +19,7 @@ int main(int argc, char** argv){
     int (*funaux1)();
     int (*funaux2)();
     funaux1 = dlsym(carga, "funaux1");
-    funaux1 = dlsym(carga, "funaux2");
+    funaux2 = dlsym(carga, "funaux2");
 
     // Verifica si hay errores al intentar buscar las funciones en las librerías
     const char *dlsym_error = dlerror();

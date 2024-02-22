@@ -1,51 +1,23 @@
-CC=gcc
-CFLAGS=-Wall -Wextra -std=c99
-LDFLAGS=-lmilibreria
+CC = gcc
+CFLAGS = -Wall -g
+LDFLAGS_STATIC = -L. -lmilibreria_static
+LDFLAGS_DYNAMIC = -L. -lmilibreria_dynamic
 
-# Directorios
-SRCDIR=src
-OBJDIR=obj
-BINDIR=bin
-LIBDIR=lib
+OBJS = testmain.o fun1src.o fun2src.o
 
-# Ficheros fuente y objetos
-SRCS=$(wildcard $(SRCDIR)/*.c)
-OBJS=$(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SRCS))
+all: libmilibreria_static libmilibreria_dynamic testmain_static testmain_dynamic
 
-# Nombres de las librerías
-STATICLIB=$(LIBDIR)/libmilibreria.a
-DYNAMICLIB=$(LIBDIR)/libmilibreria.so
+libmilibreria_static: fun1src.o fun2src.o
+	ar rcs libmilibreria_static.a fun1src.o fun2src.o
 
-# Nombres de los ejecutables
-APPSTATIC=$(BINDIR)/appstatic
-APPDYNAMIC=$(BINDIR)/appdynamic
+libmilibreria_dynamic: fun1src.o fun2src.o
+	$(CC) -shared -o libmilibreria_dynamic.so fun1src.o fun2src.o
 
-all: static dynamic
+testmain_static: $(OBJS) libmilibreria_static
+	$(CC) $(CFLAGS) -o testmain_static $(OBJS) $(LDFLAGS_STATIC)
 
-# Crea la librería estática
-static: $(STATICLIB)
-
-$(STATICLIB): $(OBJS)
-	ar rcs $@ $^
-
-# Crea la librería dinámica
-dynamic: $(DYNAMICLIB)
-
-$(DYNAMICLIB): $(OBJS)
-	$(CC) -shared -o $@ $^
-
-# Crea los objetos
-$(OBJDIR)/%.o: $(SRCDIR)/%.c
-	$(CC) $(CFLAGS) -c $< -o $@
-
-# Compila los ejecutables dtest enlazados con la librería estática y dinámica
-appstatic: static
-	$(CC) $(CFLAGS) -o $(APPSTATIC) $(SRCDIR)/testmain.c $(LDFLAGS)
-
-appdynamic: dynamic
-	$(CC) $(CFLAGS) -o $(APPDYNAMIC) $(SRCDIR)/testmain.c -L$(LIBDIR) -lmilibreria
+testmain_dynamic: $(OBJS) libmilibreria_dynamic
+	$(CC) $(CFLAGS) -o testmain_dynamic $(OBJS) $(LDFLAGS_DYNAMIC)
 
 clean:
-	rm -rf $(OBJDIR)/*.o $(LIBDIR)/*.a $(LIBDIR)/*.so $(BINDIR)/*
-
-.PHONY: all static dynamic appstatic appdynamic clean
+	-rm -f *.o *.a *.so testmain_static testmain_dynamic
