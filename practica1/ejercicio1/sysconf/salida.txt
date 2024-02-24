@@ -1,0 +1,9 @@
+Output:
+Ticks por segundo: 100
+Número máximo de procesos simultáneos que puede ejecutar un usuario: 30710
+Número máximo de ficheros que puede abrir un proceso: 8192
+Tamaño de las páginas de memoria: 4096
+Longitud máxima de los argumentos a un programa: 2097152
+Número máximo de enlaces de un fichero: 65000
+Tamaño máximo de una ruta en el sistema de ficheros 4096
+Tamaño máximo de nombre de fichero en el sistema de ficheros 255

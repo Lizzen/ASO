@@ -1,0 +1,7 @@
+Output:
+UID efectivo del programa: 1000
+UID real del programa: 1000
+El ejecutable tiene activado el bit setuid.
+Nombre de usuario: ssoo
+Directorio home: /home/ssoo
+Shell: /bin/bash

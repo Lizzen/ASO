@@ -1,0 +1,6 @@
+Output:
+SO: Linux
+Nombre del nodo: ssoohost
+Versión de Kernel: 6.5.0-18-generic
+Versión del SO: #18~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Wed Feb  7 11:40:03 UTC 2
+Hardware: x86_64

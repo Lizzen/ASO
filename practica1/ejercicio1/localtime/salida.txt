@@ -1,0 +1,3 @@
+Output:
+Hoy es (time_t): Fri Feb 23 12:43:58 2024
+Hoy es Friday, 12:43

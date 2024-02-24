@@ -1,0 +1,3 @@
+Output:
+Hoy es: Fri Feb 23 12:47:23 2024
+Hace 10 dias fue: Tue Feb 13 12:47:23 2024

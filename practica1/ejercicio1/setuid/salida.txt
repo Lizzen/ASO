@@ -1,0 +1,2 @@
+Output:
+setuid error: Operation not permitted
