@@ -28,7 +28,7 @@ int main() {
 	
 	if (setuid(0) == -1){
 		perror("setuid error");
-		exit(EXIT_FAILURE);
+		return 1;
 	}
 
 	printf("UID efectivo: %d\n", geteuid());

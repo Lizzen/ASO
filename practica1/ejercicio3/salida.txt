@@ -1,0 +1,5 @@
+Output:
+./testmain
+Programa de test para probar las funciones de mi libreria
+- el resultado de ejecutar la funcion 1 es 1
+- el resultado de ejecutar la funcion 2 es 2
