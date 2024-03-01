@@ -1,3 +1,5 @@
+// David Ferreras Díaz y Alejandro Zamorano Méndez
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
@@ -49,12 +51,12 @@ void recorre_entradas(char *path, struct stat st){
             }
         }
     }
+    closedir(dir);
 }
 
 int main (int argc, char *argv[]){
     int option;
     struct stat st;
-    char *path = optarg;
 
     while ((option = getopt(argc, argv, "d:f:")) != -1){
         switch(option){
@@ -62,26 +64,28 @@ int main (int argc, char *argv[]){
                 //Comprobamos que es un directorio lo que se ha pasado y cumple las condiciones
 
                 //Verifica que el "directorio" existe
-                if (lstat(path, &st) == -1){
-                    perror("lstat: El directorio no existe.");
+                if (lstat(optarg, &st) == -1){
+                    perror("lstat: El directorio no existe.\n");
                     exit(EXIT_FAILURE);
                 }
 
-                //Verifica que es eun directorio
+                //Verifica que es un directorio
                 if (!S_ISDIR(st.st_mode)){
-                    printf("S_IDIR: %s no es un directorio", path);
+                    printf("S_IDIR: %s no es un directorio.\n", optarg);
+                    exit(EXIT_FAILURE);
                 }
 
                 //Verifica que posee permisos de lectura y ejecución
-                if (access(path, R_OK | X_OK) == -1){
-                    perror("access: El directorio no posee permisos de lectura y ejecución");
-                }
+                if (access(optarg, R_OK | X_OK) == -1){
+                    perror("access: El directorio no posee permisos de lectura y ejecución.\n");
+                    exit(EXIT_FAILURE);
+                }       
                 
-                recorre_entradas(path, st);
+                recorre_entradas(optarg, st);
             break;
             case 'f':
-                char *filename = basename(path);
-                if (lstat(path, &st) == 0 && S_ISREG(st.st_mode)){
+                char *filename = basename(optarg);
+                if (lstat(optarg, &st) == 0 && S_ISREG(st.st_mode)){
                     printf("%s (inodo %ld, %lf kb)\n", filename, st.st_ino, (double) (st.st_size / 1024));
                 }
                 else{
