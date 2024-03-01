@@ -4,6 +4,7 @@
 #include <dirent.h>
 #include <unistd.h>
 #include <libgen.h>
+#include <getopt.h>
 
 int main(int argc, char *argv[]) {
     int opt;
@@ -65,7 +66,7 @@ int main(int argc, char *argv[]) {
                 char *filename = basename(path);
                 // Abre el fichero regular
                 if (lstat(path, &sb) == 0 && S_ISREG(sb.st_mode)) { 
-                    printf("%s (inodo %ld, %.1f kb)\n", filename, sb.st_ino, (double) (sb.st_size / 1024));
+                    printf("%s (inodo %ld, %1f kb)\n", filename, sb.st_ino, (double) (sb.st_size / 1024));
                 } else {
                     printf("%s no es un fichero regular\n", filename);
                     exit(EXIT_FAILURE);
