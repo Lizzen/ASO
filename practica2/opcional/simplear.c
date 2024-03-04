@@ -47,6 +47,12 @@ void create_archivo(char *argv[]){
     }
 }
 
+//Función  -r(Inserta archivos en un fichero)
+void insert_archivo(){}
+
+//Función -x (Extrae el fichero)
+void extract_archivo(){}
+
 int main(int argc, char *argv[]){
     int option;
 
@@ -59,12 +65,12 @@ int main(int argc, char *argv[]){
 
             //Inserción de un fichero en el archivo
             case 'r':
-
+                insert_archivo();
             break;
 
             //Extracción de un fichero
             case 'x':
-
+                extract_archivo();
             break;
 
             default: 
