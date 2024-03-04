@@ -40,6 +40,7 @@ char ar_mode[12]; /* Modo - octal */
 void create_archivo(char *argv[]){
     struct ar_ghdr stAr;    /*Struct ar de Cabecera Global*/
 
+    //Crea el fichero y le da los permisos necesarios
     int fd = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
     if (fd == -1){
         perror("open: Error al crear el archivo.");
@@ -51,7 +52,11 @@ void create_archivo(char *argv[]){
 void insert_archivo(){}
 
 //Función -x (Extrae el fichero)
-void extract_archivo(){}
+void extract_archivo(char *fichero){
+    char buffer[256];
+
+    int rd = read(fichero, buffer, sizeof(buffer));
+}
 
 int main(int argc, char *argv[]){
     int option;
@@ -70,7 +75,7 @@ int main(int argc, char *argv[]){
 
             //Extracción de un fichero
             case 'x':
-                extract_archivo();
+                extract_archivo(argv[2]);
             break;
 
             default: 
