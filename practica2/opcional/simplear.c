@@ -56,6 +56,12 @@ void extract_archivo(char *fichero){
     char buffer[256];
 
     int rd = read(fichero, buffer, sizeof(buffer));
+    if (rd == -1){
+        perror("read: Error al leer el fichero.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    
 }
 
 int main(int argc, char *argv[]){
