@@ -4,10 +4,10 @@
 #include <fcntl.h>
 
 int main (char *argv[]){
-    char *pipe= "mituberia";
+    char *pipe= "tuberia1";
 
     // Crea una tubería FIFO con permisos de lectura, escritura y ejecución rwx-rwx-rwx
-    if (mkfifo(pipe, 0777) == -1){
+    if (mkfifo(pipe, 0222) == -1){
         perror("mkfifo: Error al crear una tubería FIFO con permisos de lectura y escritura.\n");
         exit(EXIT_FAILURE);
     }

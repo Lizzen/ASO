@@ -4,7 +4,7 @@
 #include <sys/stat.h>
 
 int main (char *argv[]){
-    char *pipe= "mituberia";
+    char *pipe= "tuberia1";
 
     // Crea una tubería FIFO con permisos de lectura y escritura rw-rw-rw
     if (mkfifo(pipe, 0666) == -1){
