@@ -54,6 +54,11 @@ int main(){
             }
             printf("\n");
         }
+
+        if (FD_ISSET(STDIN_FILENO, &rfds)) {
+            printf("Fin del programa\n");
+            exit(EXIT_SUCCESS);
+        }
     }
 
     close(fd);
