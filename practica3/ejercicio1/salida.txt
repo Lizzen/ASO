@@ -1,0 +1,2 @@
+./Tuberia_sin_nombre ls -l wc -l
+      4       4      70

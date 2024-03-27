@@ -1,0 +1,4 @@
+./2_2 "Hola mundo!"
+cat < tuberia1: Hola mundo!
+
+Si se ejecuta cat en consola se queda en bucle, pero si se lee de la tubería va bien.

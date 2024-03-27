@@ -1,0 +1,5 @@
+./2_1 -l tuberia1
+Tamaño de la tubería: 0 bytes
+Permisos de la tubería: 664
+Último acceso a la tubería: 1711458634
+Última modificación de la tubería: 1711458634

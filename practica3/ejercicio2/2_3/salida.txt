@@ -1,0 +1,9 @@
+./2_3
+Mensaje para tubería1
+Datos leidos de la tubería1:
+Mensaje para tubería2
+Datos leidos de la tubería2:
+
+
+ssoo@ssoohost:~/Documentos/ASO/practica3/ejercicio2/2_3$ echo "Mensaje para tubería1" > tuberia1
+ssoo@ssoohost:~/Documentos/ASO/practica3/ejercicio2/2_3$ echo "Mensaje para tubería2" > tuberia2

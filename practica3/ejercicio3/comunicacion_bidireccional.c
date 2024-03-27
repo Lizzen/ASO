@@ -8,13 +8,13 @@
 int main(){
     int pipe_padre[2], pipe_hijo[2];
 
-    if(mkfifo(pipe_padre, 0777) == -1){
-        perror("mkfifo: Error al crear las tuberías que conectan el padre con el hijo.\n");
+    if(pipe(pipe_padre) == -1){
+        perror("pipe: Error al crear las tuberías que conectan el padre con el hijo.\n");
         exit(EXIT_FAILURE); 
     }
 
-    if(mkfifo(pipe_hijo, 0777) == -1){
-    perror("mkfifo: Error al crear las tuberías que conectan el hijo con el padre.\n");
+    if(pipe(pipe_hijo) == -1){
+    perror("pipe: Error al crear las tuberías que conectan el hijo con el padre.\n");
     exit(EXIT_FAILURE); 
     }
 
@@ -31,7 +31,7 @@ int main(){
 
         char buffer[256];
 
-        if (read(pipe_padre[READ_PIPE], buffer, sizeof(buffer) == -1){
+        if (read(pipe_padre[READ_PIPE], buffer, sizeof(buffer) == -1)){
             perror("read: Error al leer del pipe.\n");
             exit(EXIT_FAILURE);
         }

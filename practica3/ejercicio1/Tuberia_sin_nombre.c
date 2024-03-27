@@ -27,20 +27,19 @@ int main(int argc, char *argv[]){
     }
     else if(pid == 0){
 
-        //Cierra salida estandar de escritura
-        if (close(STDOUT_FILENO) == -1){
-            perror("close: Error al cerrar STDOUT_FILENO.\n");
+        //Cierra extremo de lectura
+        if (close(pipe_fd[0]) == -1){
+            perror("close: Error al cerrar el extremo de lectura.\n");
             exit(EXIT_FAILURE);
         }
 
         //Duplica la salida estandar con el extremo de escritura de la tubería
-        if (dup2(pipe_fd[0], STDOUT_FILENO) == -1){
+        if (dup2(pipe_fd[1], STDOUT_FILENO) == -1){
             perror("dup2: Error al duplicar la salida estandar con el extremo de escritura.\n");
             exit(EXIT_FAILURE);
         }
 
-        //Cierra extremo de lectura y escritura que no vamos a usar 
-        close(pipe_fd[0]);
+        //Cierra extremo de escritura que no vamos a usar 
         close(pipe_fd[1]);
 
         //Ejecuta comando1 argumento1
@@ -58,21 +57,20 @@ int main(int argc, char *argv[]){
     }
     else if(pid2 == 0){
 
-        //Cierra salida estandar de escritura
-        if (close(STDIN_FILENO) == -1){
+        //Cierra extremo de escritura
+        if (close(pipe_fd[1]) == -1){
             perror("close: Error al cerrar STDIN_FILENO.\n");
             exit(EXIT_FAILURE);
         }
 
         //Duplica la salida estandar con el extremo de escritura de la tubería
-        if (dup2(pipe_fd[1], STDOUT_FILENO) == -1){
+        if (dup2(pipe_fd[0], STDIN_FILENO) == -1){
             perror("dup2: Error al duplicar la salida estandar con el extremo de escritura.\n");
             exit(EXIT_FAILURE);
         }
 
-        //Cierra extremo de lectura y escritura que no vamos a usar 
+        //Cierra extremo de lectura
         close(pipe_fd[0]);
-        close(pipe_fd[1]);
 
         //Ejecuta comando2 argumento2
         if (execlp(argv[3], argv[4], NULL) == -1) {
