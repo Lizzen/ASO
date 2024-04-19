@@ -1,0 +1,8 @@
+ssoo@ssoohost:~/Documentos/ASO/practica4$ ./señales
+Inserte un mensaje (EOF para terminar): hola
+Mensaje recibido: hola
+Inserte un mensaje (EOF para terminar): mundo!
+Mensaje recibido: mundo!
+Inserte un mensaje (EOF para terminar): ssoo@ssoohost:~/Documentos/ASO/practica4$
+
+Para terminar se usó CTRL+D como indica el enunciado.
