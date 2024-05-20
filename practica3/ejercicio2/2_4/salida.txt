@@ -1,0 +1,7 @@
+./2_4
+Mensaje para tubería1
+Datos leidos de la tubería1:
+Se ha presionado Ctrl+D. Terminando el programa.
+
+
+echo "Mensaje para tubería1" > tuberia1

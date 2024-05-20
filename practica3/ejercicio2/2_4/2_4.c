@@ -11,7 +11,6 @@ int main(){
     // Crea una tubería FIFO con permisos de lectura, escritura y ejecución rwx-rwx-rwx
     if (mkfifo(pipe0, 0777) == -1){
         perror("mkfifo: Error al crear una tubería FIFO con permisos de lectura y escritura.\n");
-        unlink(pipe0); unlink(pipe1);
         exit(EXIT_FAILURE);
     }
 
@@ -34,10 +33,18 @@ int main(){
         FD_ZERO(&rfds);
         FD_SET(fd[0], &rfds);
         FD_SET(fd[1], &rfds);
+        FD_SET(STDIN_FILENO, &rfds);
 
         if(select(maxfd + 1, &rfds, NULL, NULL, NULL) == -1){
             perror("select");
             exit(EXIT_FAILURE);
+        }
+        
+        if (FD_ISSET(STDIN_FILENO, &rfds)) {
+            printf("Se ha presionado Ctrl+D. Terminando el programa.\n");
+            close(fd);
+            unlink(pipe0); unlink(pipe1);
+            exit(EXIT_SUCCESS);
         }
 
         if (FD_ISSET(fd[0], &rfds) && n1 == 0){
@@ -60,6 +67,7 @@ int main(){
     }
 
     close(fd);
+    unlink(pipe0); unlink(pipe1);
 
     return 0;
 }
