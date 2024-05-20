@@ -23,6 +23,7 @@ void recorre_entradas(char *path, struct stat st){
         if (lstat(entrada->d_name, &st) == 0){
             //Si es un fichero regular
             if (S_ISREG(st.st_mode)){
+                // Nombre + numero de enlaces rigidos
                 printf("%s (%lf kb, %ld link)", entrada->d_name, (double) (st.st_size / 1024), st.st_nlink);
                 if (st.st_mode & S_IXUSR || st.st_mode & S_IXGRP || st.st_mode & S_IXOTH) {
                     printf("*");
@@ -31,16 +32,18 @@ void recorre_entradas(char *path, struct stat st){
             }
             //Si es un directorio
             else if (S_ISDIR(st.st_mode)){
+                // Nombre + numero de enlaces
                 printf("[%s] (%ld link)\n", entrada->d_name, st.st_nlink);
             }
             //Si es un enlace simbólico
-            else if (S_ISLNK(st.st_mode)){
+            else if (S_ISLNK(st.st_mode)){      
                 char *buffer = malloc(st.st_size + 1);
                 if (buffer == NULL){
                     perror("malloc: error al reservar memoria para el buffer");
                     exit(EXIT_FAILURE);
                 }
 
+                // Nombre y a donde apunta
                 ssize_t linkname = readlink(entrada->d_name, buffer, st.st_size);
                 if (linkname == -1){
                     perror("readlink: error al leer a donde apunta el enlace simbólico.");

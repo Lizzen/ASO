@@ -1,83 +1,111 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
+#include <unistd.h>
 #include <ctype.h>
 #include <sys/select.h>
-#include <unistd.h>
+#include <sys/wait.h>
+#include <string.h>
 
 #define READ_PIPE 0
 #define WRITE_PIPE 1
 
-int main(){
-    int pipe_padre[2], pipe_hijo[2];
+void handle_error(const char *msg) {
+    perror(msg);
+    exit(EXIT_FAILURE);
+}
 
-    if(pipe(pipe_padre) == -1){
-        perror("pipe: Error al crear las tuberías que conectan el padre con el hijo.\n");
-        exit(EXIT_FAILURE); 
+int main() {
+    int pipe_padre_hijo[2], pipe_hijo_padre[2];
+
+    if (pipe(pipe_padre_hijo) == -1) {
+        handle_error("pipe padre_hijo");
     }
 
-    if(pipe(pipe_hijo) == -1){
-    perror("pipe: Error al crear las tuberías que conectan el hijo con el padre.\n");
-    exit(EXIT_FAILURE); 
+    if (pipe(pipe_hijo_padre) == -1) {
+        handle_error("pipe hijo_padre");
     }
 
     pid_t pid = fork();
 
-    if (pid == -1){
-        perror("fork: Error al crear el proceso hijo.\n");
-        exit(EXIT_FAILURE);
-    }
-    else if (pid == 0){
+    if (pid == -1) {
+        handle_error("fork");
+    } else if (pid == 0) {
         // Proceso hijo
-        close(pipe_hijo[READ_PIPE]);
-        close(pipe_padre[WRITE_PIPE]);
+        close(pipe_padre_hijo[WRITE_PIPE]);
+        close(pipe_hijo_padre[READ_PIPE]);
 
         char buffer[256];
+        int mensajes_recibidos = 0;
 
-        if (read(pipe_padre[READ_PIPE], buffer, sizeof(buffer) == -1)){
-            perror("read: Error al leer del pipe.\n");
-            exit(EXIT_FAILURE);
+        while (1) {
+            // Lee el mensaje del padre
+            ssize_t bytes_leidos = read(pipe_padre_hijo[READ_PIPE], buffer, sizeof(buffer) - 1);
+            if (bytes_leidos == -1) {
+                handle_error("read hijo");
+            }
+            buffer[bytes_leidos] = '\0';
+            
+            // Lo transforma a mayusculas
+            for (int i = 0; buffer[i]; ++i) {
+                buffer[i] = toupper(buffer[i]);
+            }
+
+            // Imprime el mensaje y espera
+            printf("Mensaje recibido del padre: %s", buffer);
+            fflush(stdout);
+            sleep(1);
+
+            // Si se han recibido 10 mensajes envia q para que el programa termine, si no n
+            mensajes_recibidos++;
+            char respuesta = (mensajes_recibidos < 10) ? 'n' : 'q';
+
+            if (write(pipe_hijo_padre[WRITE_PIPE], &respuesta, 1) == -1) {
+                handle_error("write hijo");
+            }
+
+            if (respuesta == 'q') {
+                break;
+            }
         }
 
-        for (int i = 0; buffer[i]; ++i){
-            buffer[i] = toupper(buffer[i]);
-        }
-
-        printf("Mensaje recibido del padre: %s", buffer);
-        sleep(10); 
-        if (write(pipe_hijo[WRITE_PIPE], 'n', 1) == -1){
-            perror("write: Error al escribir en el pipe del hijo_padre.\n");
-            exit(EXIT_FAILURE);
-        }
-    }
-    else{
+        close(pipe_padre_hijo[READ_PIPE]);
+        close(pipe_hijo_padre[WRITE_PIPE]);
+    } else {
         // Proceso padre
-        close(pipe_padre[READ_PIPE]);
-        close(pipe_hijo[WRITE_PIPE]);
+        close(pipe_padre_hijo[READ_PIPE]);
+        close(pipe_hijo_padre[WRITE_PIPE]);
 
-        int maxfd = STDIN_FILENO + 1;
-        fd_set rfds;
-        FD_ZERO(&rfds);
-        FD_SET(STDIN_FILENO, &rfds);
-        
         char buffer[256];
-        char hijo;
-        while (hijo != 'q'){
+        char hijo_respuesta;
+
+        while (1) {
             printf("Inserta un mensaje: ");
-        
-            if(select(maxfd + 1, &rfds, NULL, NULL, NULL) == -1){
-                perror("select");
-                exit(EXIT_FAILURE);
+            fflush(stdout);
+
+            if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
+                handle_error("fgets padre");
             }
 
-            if (FD_ISSET(STDIN_FILENO, &rfds)) {
-                fgets(buffer, sizeof(buffer), stdin);
-                write(pipe_padre[WRITE_PIPE], buffer, sizeof(buffer));
-                read(pipe_hijo[READ_PIPE], hijo, sizeof(hijo));
-                wait(NULL); 
+            if (write(pipe_padre_hijo[WRITE_PIPE], buffer, strlen(buffer)) == -1) {
+                handle_error("write padre");
+            }
+
+            if (read(pipe_hijo_padre[READ_PIPE], &hijo_respuesta, 1) == -1) {
+                handle_error("read padre");
+            }
+
+            if (hijo_respuesta == 'q') {
+                break;
             }
         }
-        close(pipe_padre[WRITE_PIPE]);
-        close(pipe_hijo[READ_PIPE]);      
+
+        close(pipe_padre_hijo[WRITE_PIPE]);
+        close(pipe_hijo_padre[READ_PIPE]);
+
+        // Se espera a que termine el hijo
+        wait(NULL); 
     }
+
+    return 0;
 }
