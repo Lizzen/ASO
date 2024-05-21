@@ -27,6 +27,8 @@ int main(int argc, char *argv[]){
     }
     else if(pid == 0){
 
+        //setsid(); Si lo queremos en segundo plano
+
         //Cierra extremo de lectura
         if (close(pipe_fd[0]) == -1){
             perror("close: Error al cerrar el extremo de lectura.\n");
@@ -83,8 +85,18 @@ int main(int argc, char *argv[]){
     close(pipe_fd[0]);
     close(pipe_fd[1]);
 
-    waitpid(pid, NULL, 0);
+    //int status;
+    waitpid(pid, NULL, 0);  //waitpid(pid, &status, 0);
     waitpid(pid2, NULL, 0);
+
+    // Si pidieran saber como ha terminado el hijo
+    /*if (WIFEXITED(status)) {
+        printf("El proceso hijo terminó con estado %d\n", WEXITSTATUS(status));
+    } else if (WIFSIGNALED(status)) {
+        printf("El proceso hijo fue terminado por la señal %d\n", WTERMSIG(status));
+    } else if (WIFSTOPPED(status)) {
+        printf("El proceso hijo fue detenido por la señal %d\n", WSTOPSIG(status));
+    }*/
 
     return 0;
 }
