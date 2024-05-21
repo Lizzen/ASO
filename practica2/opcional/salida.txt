@@ -1,0 +1,3 @@
+ssoo@ssoohost:~/ASO/practica2/opcional$ gcc -o simplear simplear.c
+ssoo@ssoohost:~/ASO/practica2/opcional$ bash check_simplear.sh
+

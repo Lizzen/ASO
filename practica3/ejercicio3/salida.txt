@@ -1,0 +1,21 @@
+./comunicacion_bidireccional
+Inserta un mensaje: hola mundo!
+Mensaje recibido del padre: HOLA MUNDO!
+Inserta un mensaje: 9
+Mensaje recibido del padre: 9
+Inserta un mensaje: 8
+Mensaje recibido del padre: 8
+Inserta un mensaje: 7
+Mensaje recibido del padre: 7
+Inserta un mensaje: 6
+Mensaje recibido del padre: 6
+Inserta un mensaje: 5
+Mensaje recibido del padre: 5
+Inserta un mensaje: 4
+Mensaje recibido del padre: 4
+Inserta un mensaje: 3
+Mensaje recibido del padre: 3
+Inserta un mensaje: 2
+Mensaje recibido del padre: 2
+Inserta un mensaje: 1
+Mensaje recibido del padre: 1
