@@ -17,6 +17,13 @@ void handler(int signum) {
     }
 }
 
+/*Mapa de inicializaciones
+    int sigemptyset(sigset_t * grupo);
+    int sigfillset(sigset_t * grupo);
+    int sigaddset(sigset_t * grupo, int señal);
+    int sigdelset(sigset_t * grupo, int señal);
+*/
+
 int main(int argc, char *argv[]){
     // Inicialización de manejador de señales
     struct sigaction sa;

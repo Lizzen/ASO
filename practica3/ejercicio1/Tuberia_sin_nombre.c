@@ -45,7 +45,7 @@ int main(int argc, char *argv[]){
         close(pipe_fd[1]);
 
         //Ejecuta comando1 argumento1
-        if (execlp(argv[1], argv[2], NULL) == -1) {
+        if (execlp(argv[1], argv[1], argv[2], NULL) == -1) {
             perror("execlp: Error al ejecutar ls -l.\n");
             exit(EXIT_FAILURE);
         }
@@ -75,7 +75,7 @@ int main(int argc, char *argv[]){
         close(pipe_fd[0]);
 
         //Ejecuta comando2 argumento2
-        if (execlp(argv[3], argv[4], NULL) == -1) {
+        if (execlp(argv[3], argv[3], argv[4], NULL) == -1) {
             perror("execlp: Error al ejecutar wc -l.\n");
             exit(EXIT_FAILURE);
         }
