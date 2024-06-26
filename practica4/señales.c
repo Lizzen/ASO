@@ -22,6 +22,8 @@ void handler(int signum) {
     int sigfillset(sigset_t * grupo);
     int sigaddset(sigset_t * grupo, int señal);
     int sigdelset(sigset_t * grupo, int señal);
+    sigprocmask(SIG_BLOCK,sigset_t * grupo);
+    NSIG
 */
 
 int main(int argc, char *argv[]){

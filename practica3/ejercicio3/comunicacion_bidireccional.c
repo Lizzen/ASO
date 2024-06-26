@@ -109,3 +109,24 @@ int main() {
 
     return 0;
 }
+
+
+/* Estructura del select (man select):
+        fd_set rfds;
+        struct timeval tv;
+        int retval;
+
+        //Watch stdin (fd 0) to see when it has input. 
+
+        FD_ZERO(&rfds);
+        FD_SET(fd_read, &rfds);
+        FD_SET(fileno(stdin), &rfds);
+
+
+        //Wait up to five seconds. 
+
+        tv.tv_sec = 1;
+        tv.tv_usec = 0;
+
+        retval = select(fd_read + 1, &rfds, NULL, NULL, &tv);
+*/
